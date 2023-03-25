@@ -40,7 +40,37 @@ class Game:
             if chars == player*3:
                 return True
         return False
+        
+    def computerMove(self):
+        cell = self.generateMove()
+        if cell == -1:
+            return 'D'
+        self.board[cell] = 'O'
+        if self.isWinningMove('O'):
+            return 'O'
+        else:
+            return ""
 
+    def playGame(self):
+        result = ""
+        while not result:
+            print(self.board)
+            try:
+                cell = int(input("Enter your move: "))
+                result = self.userMove(cell)
+            except (ValueError, IndexError):
+                print("Invalid move")
+            if not result:
+                result = self.computerMove()
+
+            if not result:
+                continue
+            elif result == 'D':
+                print("It's a draw")
+            else:
+                print("Winner is:", result)
+            print(self.board)
+            
     def userMove(self, cell):
         if self.board[cell] != ' ':
             raise ValueError('Invalid cell')
@@ -55,3 +85,4 @@ if _name_ == "main":
     game = Game()
     game.playGame()
     game.saveGame()
+    
